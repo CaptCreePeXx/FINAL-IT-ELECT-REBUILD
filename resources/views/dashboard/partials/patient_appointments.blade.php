@@ -1,7 +1,7 @@
 @if($list->count() == 0)
     <p class="text-gray-500">No appointments found.</p>
 @else
-    <div class="max-h-64 overflow-y-auto border border-gray-300 rounded-lg shadow-sm">
+    <div class="max-h-80 overflow-y-auto border border-gray-300 rounded-lg shadow-sm">
         <table class="min-w-full border-collapse text-left">
             <thead class="bg-gray-200 sticky top-0 border-b border-gray-300">
                 <tr>

@@ -22,40 +22,41 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(Request $request): RedirectResponse
-    {
-        // Validate email, password, and role
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'role_id' => 'required|exists:roles,id',
-        ]);
+{
+    // Validate email, password, and role
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+        'role_id' => 'required|exists:roles,id',
+    ]);
 
-        $credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            $user = Auth::user();
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        $user = Auth::user();
 
-            // Check if the selected role matches the user's role
-            if ($user->role_id != $request->role_id) {
-                Auth::logout();
-                return back()->with('error', 'Invalid credentials: Incorrect role selected.');
-            }
-
-            // Redirect based on role
-            return match($user->role_id) {
-                1 => redirect()->route('patient.dashboard'),
-                2 => redirect()->route('dentist.dashboard'),
-                3 => redirect()->route('receptionist.dashboard'),
-                4 => redirect()->route('admin.dashboard'),
-                default => redirect('/dashboard')
-            };
+        // Check if the selected role matches the user's role
+        if ($user->role_id != $request->role_id) {
+            Auth::logout();
+            return back()->with('error', 'Invalid credentials: Incorrect role selected.');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        // Redirect based on role with success message
+        return match($user->role_id) {
+            1 => redirect()->route('patient.dashboard')->with('success', 'Logged in successfully!'),
+            2 => redirect()->route('dentist.dashboard')->with('success', 'Logged in successfully!'),
+            3 => redirect()->route('receptionist.dashboard')->with('success', 'Logged in successfully!'),
+            4 => redirect()->route('admin.dashboard')->with('success', 'Logged in successfully!'),
+            default => redirect('/dashboard')->with('success', 'Logged in successfully!')
+        };
     }
+
+    return back()->withErrors([
+        'email' => 'Invalid credetionals: Incorrect email or password.',
+    ]);
+}
+
 
     /**
      * Destroy an authenticated session.

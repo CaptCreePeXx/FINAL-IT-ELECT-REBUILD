@@ -11,6 +11,20 @@
 <!-- HEADER -->
 <h2 class="text-2xl font-bold text-gray-800 mb-6">Welcome, {{ $user->name }}</h2>
 
+<!-- Book Appointment Button -->
+<a href="{{ route('appointments.create') }}" 
+   class="inline-flex items-center justify-center gap-3 mb-6 px-4 py-2 bg-[#C7E7EC] border-2 border-[#2F3E3C] text-[#2F3E3C] rounded-full font-semibold shadow hover:bg-[#AED9D1] hover:scale-105 transition-transform">
+
+    <!-- Plus Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+    </svg>
+
+    Book Appointment
+</a>
+
+
+
 @if(session('success'))
     <div id="flash-message" class="mb-4 p-3 bg-green-600 text-white rounded shadow">
         {{ session('success') }}

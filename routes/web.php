@@ -16,7 +16,7 @@ use App\Http\Controllers\AppointmentController;
 // -------------------------------------------------------
 // LANDING PAGE
 // -------------------------------------------------------
-Route::get('/', fn() => view('welcome'));
+Route::get('/', fn() => view('custom-welcome'));
 
 // -------------------------------------------------------
 // LOGOUT
