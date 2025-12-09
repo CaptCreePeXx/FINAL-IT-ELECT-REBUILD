@@ -31,14 +31,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
         </svg>
-        Book Now
+        Login
     </a>
     <a href="/register" 
        class="flex items-center justify-center gap-3 px-10 py-4 bg-[#C7E7EC] border-2 border-[#2F3E3C] text-[#2F3E3C] rounded-full font-semibold shadow-lg hover:bg-[#AED9D1] hover:scale-105 transition-transform">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-        Create account
+        Register
     </a>
 </div>
 
