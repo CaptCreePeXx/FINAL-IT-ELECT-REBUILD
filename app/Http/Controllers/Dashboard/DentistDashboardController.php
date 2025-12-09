@@ -28,7 +28,7 @@ class DentistDashboardController extends Controller
         // Pass $user for profile forms
         $user = $dentist;
 
-        // Fetch all appointments for this dentist (sorted by date & time)
+        // Fetch all appointments for this dentist
         $appointments = Appointment::where('dentist_id', $dentist->id)
                             ->orderBy('date', 'asc')
                             ->orderBy('time', 'asc')
@@ -46,9 +46,10 @@ class DentistDashboardController extends Controller
             'total'     => $appointments->count(),
         ];
 
-        // Fetch patients related to this dentist's appointments
+        // Fetch patients with active appointments for this dentist
         $patients = User::whereHas('patientAppointments', function($query) use ($dentist) {
-            $query->where('dentist_id', $dentist->id);
+            $query->where('dentist_id', $dentist->id)
+                  ->where('status', 'approved'); // Only active appointments
         })->get();
 
         return view('dashboard.dentist', compact(
@@ -61,30 +62,25 @@ class DentistDashboardController extends Controller
         ));
     }
 
-    public function upcomingAppointments()
-    {
-        $patientId = auth()->id(); // Get current patient ID
-
-        $appointments = Appointment::where('patient_id', $patientId)
-            ->where('status', 'approved') // Only confirmed appointments
-            ->whereDate('appointment_date', '>=', now()->toDateString()) // Only future or today
-            ->orderBy('appointment_date', 'asc')
-            ->orderBy('appointment_time', 'asc')
-            ->get();
-
-        return view('dashboard.patient.upcoming', compact('appointments'));
-    }
-
+    /**
+     * Optional: For AJAX requests if needed in future
+     * Fetch completed appointments for a patient
+     */
     public function patientHistory($id)
     {
-        $appointments = Appointment::with('patient')
+        $appointments = Appointment::with('dentist', 'service')
             ->where('patient_id', $id)
+            ->where('status', 'completed')
             ->orderBy('date', 'desc')
             ->orderBy('time', 'desc')
             ->get();
 
         $patient = User::findOrFail($id);
 
-        return view('dashboard.partials.patient-history', compact('appointments', 'patient'));
+        return view('dashboard.partials.dentist-patient-history', compact('appointments', 'patient'));
     }
+
 }
+
+
+

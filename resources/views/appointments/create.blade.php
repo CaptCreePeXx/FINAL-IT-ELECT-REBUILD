@@ -51,11 +51,11 @@
                 <select name="service_id" required
                         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F3E3C]">
                     <option value="">Select a service</option>
-                    <option value="1">Tooth Extraction</option>
-                    <option value="2">Teeth Cleaning</option>
-                    <option value="3">Root Canal Treatment</option>
-                    <option value="4">Dental Filling</option>
-                    <option value="5">Braces Consultation</option>
+                    @foreach($services as $service)
+                        <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>
+                            {{ $service->name }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
 
@@ -66,7 +66,9 @@
                         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F3E3C]">
                     <option value="">Select a dentist</option>
                     @foreach($dentists as $dentist)
-                        <option value="{{ $dentist->id }}">{{ $dentist->name }}</option>
+                        <option value="{{ $dentist->id }}" {{ old('dentist_id') == $dentist->id ? 'selected' : '' }}>
+                            {{ $dentist->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -74,7 +76,7 @@
             {{-- Date --}}
             <div class="space-y-2">
                 <label class="block font-medium text-[#2F3E3C]">Date</label>
-                <input type="date" name="date" required
+                <input type="date" name="date" value="{{ old('date') }}" required
                        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F3E3C]">
             </div>
 
@@ -84,8 +86,8 @@
                 <select name="time" required
                         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F3E3C]">
                     <option value="">Select Session</option>
-                    <option value="09:00:00">Morning Session (9:00 AM - 12:00 PM)</option>
-                    <option value="13:00:00">Afternoon Session (1:00 PM - 4:00 PM)</option>
+                    <option value="09:00:00" {{ old('time') == '09:00:00' ? 'selected' : '' }}>Morning Session (9:00 AM - 12:00 PM)</option>
+                    <option value="13:00:00" {{ old('time') == '13:00:00' ? 'selected' : '' }}>Afternoon Session (1:00 PM - 4:00 PM)</option>
                 </select>
             </div>
 

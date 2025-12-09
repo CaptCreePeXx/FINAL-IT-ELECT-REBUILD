@@ -26,44 +26,67 @@
 
 
 @if(session('success'))
-    <div id="flash-message" class="mb-4 p-3 bg-green-600 text-white rounded shadow">
-        {{ session('success') }}
+<div id="flash-message" 
+     class="fixed top-4 right-4 max-w-sm w-full p-4 bg-green-600 text-white rounded-lg shadow-lg border-l-4 border-green-800 flex items-start gap-3 opacity-0 translate-x-10 z-50">
+    <!-- Icon -->
+    <svg class="w-6 h-6 flex-shrink-0 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <!-- Message -->
+    <div class="flex-1">
+        <p class="font-medium">Success</p>
+        <p class="text-sm">{{ session('success') }}</p>
     </div>
+    <!-- Close button -->
+    <button onclick="document.getElementById('flash-message').remove()" 
+            class="text-white hover:text-gray-200 font-bold">&times;</button>
+</div>
 
-    <script>
-        // Fade out the flash message after 4 seconds
+<script>
+    const flash = document.getElementById('flash-message');
+    if(flash){
+        // Animate in
         setTimeout(() => {
-            const msg = document.getElementById('flash-message');
-            if(msg) {
-                msg.classList.add('transition', 'opacity-0');
-                setTimeout(() => msg.remove(), 500); // remove after fade
-            }
+            flash.classList.add('transition', 'duration-500', 'ease-out');
+            flash.classList.remove('opacity-0', 'translate-x-10');
+            flash.classList.add('opacity-100', 'translate-x-0');
+        }, 50);
+
+        // Auto-remove after 4 seconds
+        setTimeout(() => {
+            flash.classList.add('opacity-0', 'translate-x-10');
+            setTimeout(() => flash.remove(), 500);
         }, 4000);
-    </script>
+    }
+</script>
 @endif
 
+
+
+
 <!-- STATS -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-    <div class="p-4 bg-yellow-50 rounded shadow text-center">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+    <div class="p-4 bg-yellow-50 rounded shadow text-center hover:shadow-lg hover:scale-105 transition transform duration-300">
         <p class="text-gray-600 text-sm">Pending</p>
         <p class="font-bold text-xl">{{ $stats['pending'] }}</p>
     </div>
 
-    <div class="p-4 bg-blue-50 rounded shadow text-center">
+    <div class="p-4 bg-blue-50 rounded shadow text-center hover:shadow-lg hover:scale-105 transition transform duration-300">
         <p class="text-gray-600 text-sm">Approved</p>
         <p class="font-bold text-xl">{{ $stats['approved'] }}</p>
     </div>
 
-    <div class="p-4 bg-green-50 rounded shadow text-center">
+    <div class="p-4 bg-green-50 rounded shadow text-center hover:shadow-lg hover:scale-105 transition transform duration-300">
         <p class="text-gray-600 text-sm">Completed</p>
         <p class="font-bold text-xl">{{ $stats['completed'] }}</p>
     </div>
 
-    <div class="p-4 bg-red-50 rounded shadow text-center">
+    <div class="p-4 bg-red-50 rounded shadow text-center hover:shadow-lg hover:scale-105 transition transform duration-300">
         <p class="text-gray-600 text-sm">Declined</p>
         <p class="font-bold text-xl">{{ $stats['declined'] }}</p>
     </div>
 </div>
+
 
 
 <!-- UPCOMING APPOINTMENT -->

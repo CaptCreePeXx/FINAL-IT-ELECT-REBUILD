@@ -25,6 +25,16 @@ class ServicesSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'Root Canal Treatment',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Braces Consultation',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

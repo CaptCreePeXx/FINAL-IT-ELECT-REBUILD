@@ -116,3 +116,4 @@ class ReceptionistDashboardController extends Controller
         return view('dashboard.receptionist_patient_appointments', compact('patient', 'appointments'));
     }
 }
+

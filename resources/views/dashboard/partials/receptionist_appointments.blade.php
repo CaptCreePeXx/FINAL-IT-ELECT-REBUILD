@@ -8,6 +8,7 @@
                     <th class="px-4 py-2 border-r border-gray-300">Patient</th>
                     <th class="px-4 py-2 border-r border-gray-300">Date</th>
                     <th class="px-4 py-2 border-r border-gray-300">Time</th>
+                    <th class="px-4 py-2 border-r border-gray-300">Services</th>
                     <th class="px-4 py-2 border-r border-gray-300">Status</th>
                     <th class="px-4 py-2 border-r border-gray-300">Note</th>
                     <th class="px-4 py-2">Actions</th>
@@ -19,6 +20,14 @@
                     <td class="py-2 px-4 border-r border-gray-200">{{ $appointment->patient->name ?? 'Unknown' }}</td>
                     <td class="py-2 px-4 border-r border-gray-200">{{ \Carbon\Carbon::parse($appointment->date)->format('M d, Y') }}</td>
                     <td class="py-2 px-4 border-r border-gray-200">{{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}</td>
+                    <td class="py-2 px-4 border-r border-gray-200">
+                        @php
+                            $serviceNames = ($appointment->services && $appointment->services->count())
+                                ? $appointment->services->pluck('name')->join(', ')
+                                : ($appointment->service->name ?? '-');
+                        @endphp
+                        {{ $serviceNames }}
+                    </td>
                     <td class="py-2 px-4 border-r border-gray-200 capitalize">{{ str_replace('_', ' ', $appointment->status) }}</td>
                     <td class="py-2 px-4 border-r border-gray-200">{{ $appointment->cancellation_reason ?? '-' }}</td>
                     <td class="py-2 px-4 flex gap-2">

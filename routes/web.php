@@ -143,3 +143,23 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 // AUTH ROUTES
 // -------------------------------------------------------
 require __DIR__ . '/auth.php';
+
+// -------------------------------------------------------
+// FALLBACK ROUTE FOR UNAUTHORIZED OR INVALID URLS
+// -------------------------------------------------------
+Route::fallback(function () {
+    $user = Auth::user();
+    $message = 'Page not found or unauthorized access.';
+
+    if ($user) {
+        return match ($user->role_id) {
+            1 => redirect()->route('patient.dashboard')->with('error', $message),
+            2 => redirect()->route('dentist.dashboard')->with('error', $message),
+            3 => redirect()->route('receptionist.dashboard')->with('error', $message),
+            4 => redirect()->route('admin.dashboard')->with('error', $message),
+            default => redirect('/login')->with('error', $message),
+        };
+    }
+
+    return redirect('/login')->with('error', $message);
+});

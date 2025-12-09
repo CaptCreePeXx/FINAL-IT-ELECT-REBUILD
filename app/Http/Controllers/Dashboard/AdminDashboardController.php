@@ -69,4 +69,7 @@ class AdminDashboardController extends Controller
         $status = $user->status;
         return redirect()->back()->with('success', "{$user->name} has been {$status}.");
     }
+        
 }
+
+

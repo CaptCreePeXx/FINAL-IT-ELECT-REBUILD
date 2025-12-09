@@ -96,3 +96,4 @@ class PatientDashboardController extends Controller
         return back()->with('success', 'Cancellation request submitted.');
     }
 }
+
