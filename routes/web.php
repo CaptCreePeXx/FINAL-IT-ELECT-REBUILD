@@ -137,6 +137,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('users/{user}/toggle-status',
         [AdminDashboardController::class, 'toggleStatus'])
         ->name('admin.toggleStatus');
+        
+    Route::get('/admin/reports/pdf', [App\Http\Controllers\AdminReportController::class, 'exportPdf'])
+        ->name('admin.reports.pdf');
 });
 
 // -------------------------------------------------------

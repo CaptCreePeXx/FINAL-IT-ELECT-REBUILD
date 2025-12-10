@@ -65,7 +65,18 @@
         </div>
     </div>
 
-    {{-- Users Table --}}
+    {{-- Users Table with PDF Button --}}
+    <div class="mb-4 flex justify-between items-center">
+        <h2 class="text-lg font-semibold text-gray-700">Users List</h2>
+        <a href="{{ route('admin.reports.pdf') }}" 
+        class="px-4 py-2 bg-gray-600 text-white rounded-lg shadow hover:bg-gray-700 transition flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Generate PDF
+        </a>
+    </div>
+
     <div class="max-h-96 overflow-y-auto border border-gray-300 rounded-lg shadow-sm">
         <table class="min-w-full border-collapse text-left">
             <thead class="bg-gray-200 sticky top-0 border-b border-gray-300">
@@ -98,7 +109,7 @@
                         @if($user->id !== auth()->id())
                             <form class="status-form inline" action="{{ route('admin.toggleStatus', $user) }}" method="POST" data-user="{{ $user->name }}">
                                 @csrf
-                                <button type="submit" class="px-3 py-1 rounded text-white {{ $user->status == 'active' ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }}">
+                                <button type="submit" class="px-3 py-1 rounded text-white {{ $user->status == 'active' ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }} transition">
                                     {{ $user->status == 'active' ? 'Suspend' : 'Activate' }}
                                 </button>
                             </form>
