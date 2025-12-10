@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smile Bright Dental Clinic</title>
+    <title>Smile Point Dental Clinic</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
@@ -20,8 +20,15 @@
 
     <!-- Hero content -->
     <div class="relative z-10 w-full max-w-6xl text-center">
-        <h1 class="text-5xl md:text-6xl font-extrabold text-[#2F3E3C] mb-4 animate-bounce">Welcome to Our Dental Clinic</h1>
-        <p class="text-lg md:text-xl text-[#2F3E3C] mb-8">Your trusted partner for healthy, bright smiles. Manage appointments, track treatments, and stay updated—all in one place!</p>
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-4 animate-bounce text-[#2F3E3C] drop-shadow-lg">
+            Welcome to 
+            <span class="relative">
+                Smile Point
+                <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#000000] to-[#000000] rounded-full animate-pulse"></span>
+            </span>
+            Dental Clinic
+        </h1>
+        <p class="text-lg md:text-xl text-[#000000] mb-8">Your trusted partner for healthy, bright smiles. Manage appointments, track treatments, and stay updated—all in one place!</p>
 
         <!-- Buttons -->
         <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-8 relative z-10 animate-bounce-slow">

@@ -25,7 +25,7 @@ class AuthenticatedSessionController extends Controller
     {
         // Validate email, password, and role
         $request->validate([
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|email',
             'password' => 'required',
             'role_id' => 'required|exists:roles,id',
         ]);
