@@ -140,6 +140,12 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         
     Route::get('/admin/reports/pdf', [App\Http\Controllers\AdminReportController::class, 'exportPdf'])
         ->name('admin.reports.pdf');
+
+    // Services management
+    Route::get('services', [AdminDashboardController::class, 'services'])->name('admin.services.index');
+    Route::post('services', [AdminDashboardController::class, 'storeService'])->name('admin.services.store');
+    Route::put('services/{service}', [AdminDashboardController::class, 'updateService'])->name('admin.services.update');
+    Route::delete('services/{service}', [AdminDashboardController::class, 'destroyService'])->name('admin.services.destroy');
 });
 
 // -------------------------------------------------------

@@ -65,19 +65,19 @@
         </div>
     </div>
 
-    {{-- Users Table with PDF Button --}}
+    {{-- Users List Table --}}
     <div class="mb-4 flex justify-between items-center">
         <h2 class="text-lg font-semibold text-gray-700">Users List</h2>
         <a href="{{ route('admin.reports.pdf') }}" 
-        class="px-4 py-2 bg-gray-600 text-white rounded-lg shadow hover:bg-gray-700 transition flex items-center gap-2">
+           class="px-4 py-2 bg-gray-600 text-white rounded-lg shadow hover:bg-gray-700 transition flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            Generate PDF
+            Generate Report (PDF)
         </a>
     </div>
 
-    <div class="max-h-96 overflow-y-auto border border-gray-300 rounded-lg shadow-sm">
+    <div class="max-h-96 overflow-y-auto border border-gray-300 rounded-lg shadow-sm mb-6">
         <table class="min-w-full border-collapse text-left">
             <thead class="bg-gray-200 sticky top-0 border-b border-gray-300">
                 <tr>
@@ -122,6 +122,60 @@
             </tbody>
         </table>
     </div>
+
+    {{-- Services Card below Users List --}}
+    <div class="w-1/3 p-4 rounded-lg bg-transparent">
+        <div class="flex justify-between items-center mb-3">
+            <h2 class="text-lg font-semibold text-gray-700">Manage Services</h2>
+            <form action="{{ route('admin.services.store') }}" method="POST" class="flex gap-2">
+                @csrf
+                <input type="text" name="name" placeholder="New Service" required
+                       class="border rounded px-2 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                <button type="submit" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-700 transition">
+                    Add
+                </button>
+            </form>
+        </div>
+        <div class="max-h-64 overflow-y-auto">
+            <table class="min-w-full border-collapse text-left">
+                <thead class="bg-gray-200 sticky top-0 border-b border-gray-300">
+                    <tr>
+                        <th class="px-3 py-2 border-r border-gray-300">#</th>
+                        <th class="px-3 py-2 border-r border-gray-300">Service</th>
+                        <th class="px-3 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-gray-50">
+                    @foreach($services as $service)
+                    <tr class="text-gray-700 hover:bg-gray-100 border-b border-gray-200">
+                        <td class="py-2 px-3 border-r border-gray-200">{{ $loop->iteration }}</td>
+                        <td class="py-2 px-3 border-r border-gray-200">
+                            <form action="{{ route('admin.services.update', $service) }}" method="POST" class="flex gap-2">
+                                @csrf
+                                @method('PUT')
+                                <input type="text" name="name" value="{{ $service->name }}" 
+                                       class="border rounded px-2 py-1 w-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                                <button type="submit" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-700 transition">
+                                    Save
+                                </button>
+                            </form>
+                        </td>
+                        <td class="py-2 px-3">
+                            <form action="{{ route('admin.services.destroy', $service) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
 <!-- Confirmation Modal -->
@@ -166,7 +220,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300);
     }
 
-    // Role change confirmation
     document.querySelectorAll('.role-form select').forEach(select => {
         select.addEventListener('change', function(e) {
             const userName = this.closest('form').dataset.user;
@@ -175,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Status change confirmation
     document.querySelectorAll('.status-form button').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -191,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     modalCancel.addEventListener('click', hideModal);
-
     modal.addEventListener('click', function(e) {
         if(e.target === modal) hideModal();
     });

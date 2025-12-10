@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Appointment;
+use App\Models\Service;
 
 class AdminDashboardController extends Controller
 {
@@ -39,7 +40,10 @@ class AdminDashboardController extends Controller
             'total_users'   => User::count(),
         ];
 
-        return view('dashboard.admin', compact('users', 'stats'));
+        // Fetch all services for quick management
+        $services = Service::all();
+
+        return view('dashboard.admin', compact('users', 'stats', 'services'));
     }
 
     // Assign role to a user
@@ -69,7 +73,37 @@ class AdminDashboardController extends Controller
         $status = $user->status;
         return redirect()->back()->with('success', "{$user->name} has been {$status}.");
     }
-        
+
+    // Add a new service
+    public function storeService(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:services,name',
+        ]);
+
+        Service::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->back()->with('success', 'Service added successfully!');
+    }
+
+    // Update an existing service
+    public function updateService(Request $request, Service $service)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:services,name,' . $service->id,
+        ]);
+
+        $service->update(['name' => $request->name]);
+
+        return redirect()->back()->with('success', 'Service updated successfully!');
+    }
+
+    // Delete a service
+    public function destroyService(Service $service)
+    {
+        $service->delete();
+        return redirect()->back()->with('success', 'Service deleted successfully!');
+    }
 }
-
-
