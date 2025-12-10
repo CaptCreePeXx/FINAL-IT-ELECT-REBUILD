@@ -30,14 +30,12 @@
 <script>
     const flash = document.getElementById('flash-message');
     if(flash){
-        // Animate in
         setTimeout(() => {
             flash.classList.add('transition', 'duration-500', 'ease-out');
             flash.classList.remove('opacity-0', 'translate-x-10');
             flash.classList.add('opacity-100', 'translate-x-0');
         }, 50);
 
-        // Auto-remove after 4 seconds
         setTimeout(() => {
             flash.classList.add('opacity-0', 'translate-x-10');
             setTimeout(() => flash.remove(), 500);
@@ -46,9 +44,7 @@
 </script>
 @endif
 
-
-
-<!--Stats Cards -->
+<!-- Stats Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-4 mb-16">
     <div class="p-4 bg-blue-50 rounded shadow text-center hover:shadow-lg hover:scale-105 transition transform duration-300">
         <p class="text-gray-600 text-sm">Approved</p>
@@ -86,6 +82,7 @@
                                 <th class="px-4 py-2 border-r border-gray-300">Patient</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Date</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Time</th>
+                                <th class="px-4 py-2 border-r border-gray-300">Dentist</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Services</th>
                                 <th class="px-4 py-2">Actions</th>
                             </tr>
@@ -96,6 +93,7 @@
                                 <td class="py-2 px-4 border-r border-gray-200">{{ $appointment->patient->name ?? 'Unknown' }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">{{ \Carbon\Carbon::parse($appointment->date)->format('M d, Y') }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">{{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}</td>
+                                <td class="py-2 px-4 border-r border-gray-200">{{ $appointment->dentist->name ?? 'Not Assigned' }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">
                                     @php
                                         $serviceNames = ($appointment->services && $appointment->services->count())
@@ -135,6 +133,7 @@
                                 <th class="px-4 py-2 border-r border-gray-300">Patient</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Date</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Time</th>
+                                <th class="px-4 py-2 border-r border-gray-300">Dentist</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Services</th>
                                 <th class="px-4 py-2">Actions</th>
                             </tr>
@@ -145,6 +144,7 @@
                                 <td class="py-2 px-4 border-r border-gray-200">{{ $appointment->patient->name ?? 'Unknown' }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">{{ \Carbon\Carbon::parse($appointment->date)->format('M d, Y') }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">{{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}</td>
+                                <td class="py-2 px-4 border-r border-gray-200">{{ $appointment->dentist->name ?? 'Not Assigned' }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">
                                     @php
                                         $serviceNames = ($appointment->services && $appointment->services->count())
@@ -184,6 +184,7 @@
                                 <th class="px-4 py-2 border-r border-gray-300">Patient</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Date</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Time</th>
+                                <th class="px-4 py-2 border-r border-gray-300">Dentist</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Services</th>
                                 <th class="px-4 py-2 border-r border-gray-300">Notes</th>
                                 <th class="px-4 py-2">Actions</th>
@@ -195,6 +196,7 @@
                                 <td class="py-2 px-4 border-r border-gray-200">{{ $appointment->patient->name ?? 'Unknown' }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">{{ \Carbon\Carbon::parse($appointment->date)->format('M d, Y') }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">{{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}</td>
+                                <td class="py-2 px-4 border-r border-gray-200">{{ $appointment->dentist->name ?? 'Not Assigned' }}</td>
                                 <td class="py-2 px-4 border-r border-gray-200">
                                     @php
                                         $serviceNames = ($appointment->services && $appointment->services->count())
@@ -265,19 +267,16 @@
 
 @push('scripts')
 <script>
-
 function openNoteModal(id) {
     const modal = document.getElementById(`note-modal-${id}`);
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 }
-
 function closeNoteModal(id) {
     const modal = document.getElementById(`note-modal-${id}`);
     modal.classList.add('hidden');
     modal.classList.remove('flex');
 }
-
 function openTab(tabId) {
     const tabs = ['dashboard', 'appointments', 'patients', 'reports', 'profile'];
     tabs.forEach(id => {
@@ -294,7 +293,6 @@ function openTab(tabId) {
     const content = document.getElementById(tabId);
     if(content) content.classList.remove('hidden');
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get('tab') || 'dashboard';
