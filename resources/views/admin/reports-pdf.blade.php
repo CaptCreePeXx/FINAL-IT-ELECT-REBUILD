@@ -32,7 +32,7 @@
                 <th>Dentist</th>
                 <th>Date</th>
                 <th>Time</th>
-                <th>Services</th>
+                <th>Service</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -43,14 +43,7 @@
                 <td>{{ $appt->dentist->name }}</td>
                 <td>{{ \Carbon\Carbon::parse($appt->date)->format('M d, Y') }}</td>
                 <td>{{ \Carbon\Carbon::parse($appt->time)->format('h:i A') }}</td>
-                <td>
-                    @php
-                        $serviceNames = ($appt->services && $appt->services->count())
-                            ? $appt->services->pluck('name')->join(', ')
-                            : ($appt->service->name ?? '-');
-                    @endphp
-                    {{ $serviceNames }}
-                </td>
+                <td>{{ $appt->service->name ?? '-' }}</td>
                 <td>{{ ucfirst($appt->status) }}</td>
             </tr>
             @endforeach

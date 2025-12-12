@@ -24,7 +24,7 @@ class AdminReportController extends Controller
         ];
 
         // Retrieve all appointments with patient and dentist relationship
-        $appointments = Appointment::with('patient', 'dentist')->get();
+        $appointments = Appointment::with('patient', 'dentist', 'service')->get();
 
         // Return the Blade view for HTML display
         return view('admin.reports', compact('stats', 'appointments'));
@@ -45,13 +45,13 @@ class AdminReportController extends Controller
         ];
 
         // Retrieve all appointments with patient and dentist relationship
-        $appointments = Appointment::with('patient', 'dentist')->get();
+        $appointments = Appointment::with('patient', 'dentist', 'service')->get();
 
-        // Load the PDF view
+        // Load PDF view
         $pdf = Pdf::loadView('admin.reports-pdf', compact('stats', 'appointments'))
                   ->setPaper('a4', 'landscape'); // Set PDF size and orientation
 
-        // Download the PDF with a timestamped filename
+        // Download the PDF
         return $pdf->download('clinic_report_' . now()->format('Y_m_d_H_i') . '.pdf');
     }
 }

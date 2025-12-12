@@ -21,12 +21,19 @@
                     <td class="px-3 py-2 border-r border-gray-200">{{ $appt->service->name ?? 'Unknown Service' }}</td>
                     <td class="px-3 py-2 border-r border-gray-200">{{ $appt->dentist->name ?? 'Unknown Dentist' }}</td>
                     <td class="px-3 py-2 border-r border-gray-200 capitalize font-semibold">{{ $appt->status }}</td>
-                    <td class="px-3 py-2">
+                    <td class="px-3 py-2 flex gap-2 items-center">
                         @if($appt->status === 'pending')
+                            <!-- Edit button -->
+                            <a href="{{ route('appointments.edit', $appt->id) }}" 
+                               class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">
+                                Edit
+                            </a>
+
+                            <!-- Cancel button -->
                             <form action="{{ route('appointments.cancelPending', $appt->id) }}" method="POST" 
                                   onsubmit="return confirm('Are you sure you want to cancel this pending appointment?');">
                                 @csrf
-                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition">
                                     Cancel
                                 </button>
                             </form>
@@ -34,7 +41,7 @@
                             <form action="{{ route('appointments.requestCancellation', $appt->id) }}" method="POST"
                                   onsubmit="return promptCancellationReason(this);">
                                 @csrf
-                                <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+                                <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition">
                                     Request Cancellation
                                 </button>
                             </form>

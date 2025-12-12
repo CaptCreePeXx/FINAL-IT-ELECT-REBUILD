@@ -89,8 +89,21 @@ class AppointmentController extends Controller
     /**
      * Show the form for editing an appointment
      */
-    public function edit(Appointment $appointment)
+   public function edit(Appointment $appointment)
     {
+        $user = Auth::user();
+
+        // Restrict: patients can only edit their own pending appointments
+        if ($user->role_id == 1) {
+            if ($appointment->patient_id !== $user->id) {
+                abort(403, 'Unauthorized');
+            }
+
+            if ($appointment->status !== 'pending') {
+                return redirect()->back()->with('error', 'Only pending appointments can be edited.');
+            }
+        }
+
         $patients = User::where('role_id', 1)->get();
         $dentists = User::where('role_id', 2)->get();
         $services = Service::all();
@@ -98,11 +111,32 @@ class AppointmentController extends Controller
         return view('appointments.edit', compact('appointment', 'patients', 'dentists', 'services'));
     }
 
-    /**
-     * Update an existing appointment
-     */
     public function update(Request $request, Appointment $appointment)
-    {
+{
+    $user = Auth::user();
+
+    // Restrict patient edits
+    if ($user->role_id == 1) {
+        if ($appointment->patient_id !== $user->id) {
+            abort(403, 'Unauthorized');
+        }
+
+        if ($appointment->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending appointments can be edited.');
+        }
+
+        // Patient can only edit dentist, service, date, and time
+        $request->validate([
+            'dentist_id' => 'required|exists:users,id',
+            'service_id' => 'required|exists:services,id',
+            'date' => 'required|date',
+            'time' => 'required',
+        ]);
+
+        $appointment->update($request->only(['dentist_id', 'service_id', 'date', 'time']));
+
+    } else {
+        // Admin/receptionist full edit
         $request->validate([
             'patient_id' => 'required|exists:users,id',
             'dentist_id' => 'required|exists:users,id',
@@ -113,9 +147,10 @@ class AppointmentController extends Controller
         ]);
 
         $appointment->update($request->all());
-
-        return redirect()->route('appointments.index')->with('success', 'Appointment updated successfully.');
     }
+
+    return redirect()->route('patient.dashboard')->with('success', 'Appointment updated successfully.');
+}
 
     /**
      * Delete an appointment
